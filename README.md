@@ -25,14 +25,33 @@ It wrote the code, ran away, and now the game is unplayable.
 
 ## 📝 Document Your Experience
 
-- [ ] Describe the game's purpose.
-- [ ] Detail which bugs you found.
-- [ ] Explain what fixes you applied.
+I built a number guessing game where the app picks a secret number and I try to guess it. After each guess I get a hint telling me if I went too high or too low. I keep guessing until I get it right or run out of attempts.
+
+**Bugs I found:**
+
+1. **The hints were backwards** — when my guess was too high it told me "Go HIGHER!" and when it was too low it told me "Go LOWER!". The messages were swapped inside `check_guess` in `app.py`.
+
+2. **New Game did not actually reset the game** — after I won, clicking New Game kept showing "You already won" and I could not type a new guess. The game status was never changed back to `"playing"` so the app stayed stuck.
+
+3. **The secret number was secretly turned into text** — on every second guess the secret was converted to a string before being compared to my guess. This caused a weird bug where the hints were sometimes wrong in a different way.
+
+**How I fixed them:**
+
+1. I swapped the hint messages so "Too High" now says "Go LOWER!" and "Too Low" says "Go HIGHER!".
+2. I added `st.session_state.status = "playing"` in the New Game handler so the game properly resets.
+3. I removed the string conversion so the secret is always a number when compared to my guess.
+4. I moved all the game logic (`check_guess`, `parse_guess`, `get_range_for_difficulty`, `update_score`) out of `app.py` and into `logic_utils.py` to keep things clean.
+5. I wrote 6 pytest tests in `tests/test_game_logic.py` to make sure the fixes actually work — all 6 pass.
 
 ## 📸 Demo
 
-- [ ] [Insert a screenshot of your fixed, winning game here]
-
-## 🚀 Stretch Features
+when guess is higher:
+![alt text](<Screenshot (439).png>)
+when guess is lower:
+![alt text](<Screenshot (442).png>) 
+when guess is correct:
+![alt text](<Screenshot (440).png>)
+running new game:
+![alt text](<Screenshot (443).png>)
 
 - [ ] [If you choose to complete Challenge 4, insert a screenshot of your Enhanced Game UI here]
